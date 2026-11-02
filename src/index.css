@@ -1,0 +1,67 @@
+/*
+ * Tailwind's theme + utilities, without its preflight reset: the ported
+ * Webflow stylesheet ships its own normalize, and the replica depends on it.
+ * Webflow styles sit in the `base` layer, so any Tailwind utility you add
+ * later wins over them.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "./styles/webflow.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* These Webflow class names are also Tailwind utilities; keep the Webflow ones. */
+@source not inline("container grid list-item overline align-middle");
+
+/* Site colors and font as Tailwind tokens, e.g. `text-turquoise`, `bg-light-teal`. */
+@theme inline {
+  --font-sans: Inter, sans-serif;
+  --color-white: var(--white);
+  --color-black: var(--black);
+  --color-turquoise: var(--turquoise);
+  --color-teal: var(--teal);
+  --color-light-teal: var(--light-teal);
+  --color-dark-teal: var(--dark-teal);
+  --color-pink: var(--pink);
+  --color-pink-border: var(--pink-border);
+  --color-light-indigo: var(--light-indigo);
+  --color-border-light-indigo: var(--border-light-indigo);
+  --color-dark-indigo: var(--dark-indigo);
+  --color-light-purple: var(--light-purple);
+  --color-artura-red: var(--artura-red);
+  --color-yellow: var(--yellow);
+}
+
+/* Webflow interactions, recreated. */
+@layer components {
+  /* "Fade in" on scroll into view: up 40px, fade to full opacity. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+    transition:
+      opacity 600ms ease,
+      transform 600ms ease;
+  }
+  [data-reveal="delay"] {
+    transition-duration: 500ms;
+    transition-delay: 200ms;
+  }
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Buttons and project cards shrink slightly on hover. */
+  .ix-press {
+    transition: transform 100ms ease;
+  }
+  .ix-press:hover {
+    transform: scale(0.95);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    .ix-press {
+      transition: none;
+    }
+  }
+}
